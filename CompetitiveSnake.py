@@ -1,8 +1,8 @@
 import arcade
 
 
-WIDTH = 640
-HEIGHT = 480
+WIDTH = 800
+HEIGHT = 600
 
 
 def on_update(delta_time):
@@ -11,8 +11,15 @@ def on_update(delta_time):
 
 def on_draw():
     arcade.start_render()
-    # Draw in here...
-    arcade.draw_circle_filled(100, 100, 25, arcade.color.BLUE)
+    draw_grid()
+
+
+def draw_grid():
+    arcade.draw_xywh_rectangle_outline(1, 1, WIDTH-1, HEIGHT-2, color=arcade.color.RED)
+    for i in range(int(WIDTH/20)):
+        arcade.draw_line(i*20, 0, i*20, HEIGHT, color=arcade.color.BLACK)
+    for i in range(int(HEIGHT/20)):
+        arcade.draw_line(0, i*20, WIDTH, i*20, color=arcade.color.BLACK)
 
 
 def on_key_press(key, modifiers):
