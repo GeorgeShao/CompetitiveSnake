@@ -95,13 +95,13 @@ def on_update(delta_time):
 
 
 def on_draw():
-    global on_start_screen, on_play_screen, start_key_rgb
+    global on_start_screen, on_play_screen, start_key_rgb, start_key_pressed
     arcade.start_render()
     if on_start_screen:
         draw_start_screen()
         if start_key_pressed:
             draw_start_screen_animation()
-            if start_key_rgb[0] <= 1:
+            if start_key_rgb[0] == 0:
                 on_start_screen = False
                 on_play_screen = True
     elif on_play_screen:
@@ -114,13 +114,21 @@ def draw_start_screen():
 
 
 def draw_start_screen_animation():
-    global start_key_rgb
+    global start_key_rgb, on_start_screen, on_play_screen
     arcade.draw_xywh_rectangle_filled(0, 0, WIDTH, HEIGHT, start_key_rgb)
+    
     if start_key_rgb[0] > 0:
-        start_key_rgb = (start_key_rgb[0] - 2.5, start_key_rgb[1] - 2.5, start_key_rgb[2] - 2.5)
+        start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
+    print(start_key_rgb)
+
+    if on_start_screen:
+        arcade.set_background_color(arcade.color.WHITE)
+    elif on_play_screen:
+        arcade.set_background_color(arcade.color.BLACK)
 
 
 def draw_grid():
+    arcade.set_background_color(arcade.color.BLACK)
     arcade.draw_xywh_rectangle_outline(1, 1, WIDTH-1, HEIGHT-2, arcade.color.RED)
     for i in range(int(WIDTH/20)):
         arcade.draw_line(i*20, 0, i*20, HEIGHT, arcade.color.WHITE)
@@ -146,13 +154,8 @@ def on_mouse_press(x, y, button, modifiers):
 
 
 def setup():
-    global on_start_screen, on_play_screen
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    if on_start_screen:
-        arcade.set_background_color(arcade.color.WHITE)
-    elif on_play_screen:
-        arcade.set_background_color(arcade.color.BLACK)
-
+    arcade.set_background_color(arcade.color.WHITE)
     arcade.schedule(on_update, 1/60)
 
     # Override arcade window methods
