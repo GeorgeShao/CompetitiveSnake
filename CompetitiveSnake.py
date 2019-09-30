@@ -4,38 +4,86 @@ import arcade
 WIDTH = 800
 HEIGHT = 600
 
-# TODO: create general button class
+# TODO: add to general button class
+
+buttons = []
+
+def get_button_index_by_id(buttonid):
+    button_index = -1
+    for i in range(len(buttons)):
+        if buttons[i].buttonid == buttonid:
+            button_index = i
+            break
+    if button_index == -1:
+        print(f"ERROR: no button with id {buttonid} found")
+    return button_index
 
 class Button:
-    def __init__(x, y, w, h, color, filled, buttontype):
+    def __init__(self, buttonid, x, y, w, h, color, filled, buttontype):
+        self.buttonid = buttonid
         self.x = x
         self.y = y
         self.w = w
         self.h = h
         self.color = color
         self.filled = filled
-        self.type = buttontype
+        self.buttontype = buttontype
     
-    def draw_button(self):
-        if self.filled:
-            if self.buttontype == "standard":
-                arcade.draw_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "ltrb":
-                arcade.draw_lrtb_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "xywh":
-                arcade.draw_xywh_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-        if not self.filled:
-            if self.buttontype == "standard":
-                arcade.draw_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "ltrb":
-                arcade.draw_lrtb_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "xywh":
-                arcade.draw_xywh_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
+    def create(self):
+        buttons.append(self)
+    
+    def draw(buttonid):
+        button_index = get_button_index_by_id(buttonid)
+        if button_index != -1:
+            if buttons[button_index].filled:
+                if buttons[button_index].buttontype == "standard":
+                    arcade.draw_rectangle_filled(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+                elif buttons[button_index].buttontype == "ltrb":
+                    arcade.draw_lrtb_rectangle_filled(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+                elif buttons[button_index].buttontype == "xywh":
+                    arcade.draw_xywh_rectangle_filled(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+            if not buttons[button_index].filled:
+                if buttons[button_index].buttontype == "standard":
+                    arcade.draw_rectangle_outline(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+                elif buttons[button_index].buttontype == "ltrb":
+                    arcade.draw_lrtb_rectangle_outline(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+                elif buttons[button_index].buttontype == "xywh":
+                    arcade.draw_xywh_rectangle_outline(buttons[button_index].x, buttons[button_index].y, buttons[button_index].w, buttons[button_index].h, buttons[button_index].color)
+
+    def update_x(buttonid, x):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].x = x
+    
+    def update_y(buttonid, y):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].y = y
+    
+    def update_w(buttonid, w):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].w = w
+    
+    def update_h(buttonid, h):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].h = h
+    
+    def update_color(buttonid, color):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].color = color
+    
+    def update_filled(buttonid, filled):
+        button_index = get_button_index_by_id(buttonid)
+        if get_button_index_by_id(buttonid) != -1:
+            buttons[button_index].filled = filled
 
 
 # Start screen variables
 on_start_screen = True
-start_key_pressed = False
+Button.create(Button("start_button", WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard"))
 start_key_rgb = arcade.color.GREEN
 start_rgb_rgb_target = arcade.color.GO_GREEN
 
@@ -54,11 +102,8 @@ def on_draw():
 
 
 def draw_start_screen():
-    global start_key_pressed
-    if not start_key_pressed:
-        arcade.draw_rectangle_filled(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN)
-    elif start_key_pressed:
-        arcade.draw_rectangle_filled(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GO_GREEN)
+    Button.draw("start_button")
+    arcade.draw_text("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
 
 def draw_grid():
@@ -78,10 +123,9 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
-    global start_key_pressed
     if WIDTH/2 - 150 <= x <= WIDTH/2 + 150:
         if HEIGHT/2 - 50 <= y <= HEIGHT/2 + 50:
-            start_key_pressed = True
+            Button.update_color("start_button", arcade.color.GO_GREEN)
 
 
 def setup():
