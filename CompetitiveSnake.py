@@ -81,12 +81,13 @@ class Button:
             buttons[button_index].filled = filled
 
 
-# Start screen variables
+# Start screen setup
 on_start_screen = True
+start_key_pressed = False
+start_key_rgb = (255, 255, 255)
 Button.create(Button("start_button", WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard"))
-start_key_rgb = arcade.color.GREEN
-start_rgb_rgb_target = arcade.color.GO_GREEN
 
+# Play screen setup
 on_play_screen = False
 
 def on_update(delta_time):
@@ -94,9 +95,15 @@ def on_update(delta_time):
 
 
 def on_draw():
+    global on_start_screen, on_play_screen, start_key_rgb
     arcade.start_render()
     if on_start_screen:
         draw_start_screen()
+        if start_key_pressed:
+            draw_start_screen_animation()
+            if start_key_rgb[0] <= 1:
+                on_start_screen = False
+                on_play_screen = True
     elif on_play_screen:
         draw_grid()
 
@@ -106,12 +113,19 @@ def draw_start_screen():
     arcade.draw_text("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
 
+def draw_start_screen_animation():
+    global start_key_rgb
+    arcade.draw_xywh_rectangle_filled(0, 0, WIDTH, HEIGHT, start_key_rgb)
+    if start_key_rgb[0] > 0:
+        start_key_rgb = (start_key_rgb[0] - 2.5, start_key_rgb[1] - 2.5, start_key_rgb[2] - 2.5)
+
+
 def draw_grid():
     arcade.draw_xywh_rectangle_outline(1, 1, WIDTH-1, HEIGHT-2, arcade.color.RED)
     for i in range(int(WIDTH/20)):
-        arcade.draw_line(i*20, 0, i*20, HEIGHT, arcade.color.BLACK)
+        arcade.draw_line(i*20, 0, i*20, HEIGHT, arcade.color.WHITE)
     for i in range(int(HEIGHT/20)):
-        arcade.draw_line(0, i*20, WIDTH, i*20, arcade.color.BLACK)
+        arcade.draw_line(0, i*20, WIDTH, i*20, arcade.color.WHITE)
 
 
 def on_key_press(key, modifiers):
@@ -123,14 +137,22 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
+    global start_key_pressed
     if WIDTH/2 - 150 <= x <= WIDTH/2 + 150:
         if HEIGHT/2 - 50 <= y <= HEIGHT/2 + 50:
             Button.update_color("start_button", arcade.color.GO_GREEN)
+            start_key_pressed = True
+
 
 
 def setup():
+    global on_start_screen, on_play_screen
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.WHITE)
+    if on_start_screen:
+        arcade.set_background_color(arcade.color.WHITE)
+    elif on_play_screen:
+        arcade.set_background_color(arcade.color.BLACK)
+
     arcade.schedule(on_update, 1/60)
 
     # Override arcade window methods
