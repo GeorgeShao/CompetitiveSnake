@@ -129,7 +129,7 @@ def on_mouse_press(x, y, button, modifiers):
 
 def setup():
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.BLUE)
+    arcade.set_background_color(arcade.color.WHITE)
     arcade.schedule(on_update, 1/60)
 
     # Override arcade window methods

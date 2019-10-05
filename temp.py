@@ -91,11 +91,10 @@ class MyGame(arcade.Window):
             "on_start_screen": False,
             "on_play_screen":  False,
             "start_key_pressed": False,
-
         }
 
-        start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
-        start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
+        self.start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
+        self.start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
     def on_draw(self):
         arcade.start_render()
