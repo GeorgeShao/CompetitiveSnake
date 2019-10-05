@@ -42,7 +42,7 @@ class Button:
             elif self.buttontype == "xywh":
                 if self.x < x < (self.x + self.w) \
                     and self.y < y < (self.y + self.h):
-                        return True, self.clickevent()
+                    return True, self.clickevent()
             elif self.buttontype == "ltrb":
                 if self.x < x < self.w \
                     and self.y > y > self.h:
@@ -105,7 +105,7 @@ class MyGame(arcade.Window):
         elif self.flags["on_play_screen"]:
             arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
                                          SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
-        # Render the text
+
 
     def draw_start_screen(self):
         self.start_button.draw()
@@ -134,8 +134,10 @@ class MyGame(arcade.Window):
             self.start_button.displaytext = False
             self.flags["start_key_pressed"] = True
 
+
     def update(self, delta_time):
         pass
+
 
     def setup(self):
         self.background = arcade.load_texture("assets/grid_background.png")
@@ -143,7 +145,6 @@ class MyGame(arcade.Window):
         logging.debug("Done setup()")
 
 def main():
-    """ Main method """
     window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     window.setup()
     arcade.run()
