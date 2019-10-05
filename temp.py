@@ -1,16 +1,9 @@
-"""
-Sprite Collect Coins with Background
-
-Simple program to show basic sprite usage.
-
-Artwork from http://kenney.nl
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_collect_coins_background
-"""
 import random
 import arcade
 import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 SPRITE_SCALING = 0.5
 
@@ -88,11 +81,14 @@ class MyGame(arcade.Window):
         # Call the parent class initializer
         super().__init__(width, height, title)
         self.flags = {
-            "on_start_screen": False,
+            "on_start_screen": True,
             "on_play_screen":  False,
             "start_key_pressed": False,
+            "color_code": 255
         }
+        self.background = None
 
+        arcade.set_background_color(arcade.color.WHITE)
         self.start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
         self.start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
@@ -101,15 +97,15 @@ class MyGame(arcade.Window):
         if self.flags["on_start_screen"]:
             self.draw_start_screen()
             if self.flags["start_key_pressed"]:
-                if start_key_rgb[0] > 0:
-                    start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
-                    arcade.set_background_color(start_key_rgb)
-                if start_key_rgb[0] == 0:
+                if self.flags["color_code"] > 0:
+                    arcade.set_background_color((self.flags["color_code"], self.flags["color_code"], self.flags["color_code"]))
+                    self.flags["color_code"] -= 3
+                else:
                     self.flags["on_start_screen"] = False
                     self.flags["on_play_screen"] = True
-                print(start_key_rgb)
         elif self.flags["on_play_screen"]:
-            draw_grid()
+            arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
+                                         SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         # Render the text
 
     def draw_start_screen(self):
@@ -123,15 +119,6 @@ class MyGame(arcade.Window):
             arcade.set_background_color(arcade.color.WHITE)
         elif self.flags["on_play_screen"]:
             arcade.set_background_color(arcade.color.BLACK)
-
-
-    def draw_grid(self):
-        arcade.set_background_color(arcade.color.BLACK)
-        arcade.draw_xywh_rectangle_outline(1, 0, WIDTH-1, HEIGHT-1, arcade.color.RED)
-        for i in range(1, int(WIDTH/20)):
-            arcade.draw_line(i*20, 0, i*20, HEIGHT, arcade.color.WHITE)
-        for i in range(1, int(HEIGHT/20)):
-            arcade.draw_line(1, i*20, WIDTH, i*20, arcade.color.WHITE)
 
 
     def on_key_press(self, key, modifiers):
@@ -152,8 +139,9 @@ class MyGame(arcade.Window):
         pass
 
     def setup(self):
+        self.background = arcade.load_texture("assets/grid_background.png")
         # arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-        arcade.set_background_color(arcade.color.WHITE)
+        logging.debug("Done setup()")
 
 def main():
     """ Main method """
