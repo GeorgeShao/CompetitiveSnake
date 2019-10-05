@@ -13,8 +13,7 @@ SCREEN_TITLE = f"Competitive Snake (from {__file__})"
 
 
 class Button:
-    def empty():
-        pass
+
     def __init__(self, x, y, w, h, color, filled, buttontype):
         self.x = x
         self.y = y
@@ -28,7 +27,7 @@ class Button:
         self.displaytext = True
 
     def onClick(self, func):
-      	self.clickevent = func
+      	self.clickevent = lambda: None
     
     def text_arguments(self, *args, **kwargs):
         self._text_args = args
