@@ -18,44 +18,50 @@ class Button:
         self.filled = filled
         self.buttontype = buttontype
         self.clickevent = Button.empty
-    
-    def create_text(self, arguments):
-        
+        self.enablebutton = True
+        self.displaytext = True
 
     def onClick(self, func):
       	self.clickevent = func
     
+    def text_arguments(self, *args, **kwargs):
+        self._text_args = args
+        self._text_kwargs = kwargs
 
     def check_press(self, x, y):
-        if self.buttontype == "standard":
-            if self.x - self.w/2 <= x <= self.x + self.w/2 \
-                and self.y - self.h/2 <= y <= self.y + self.h/2:
-              	return True, self.clickevent()
-        elif self.buttontype == "xywh":
-        	if self.x < x < (self.x + self.w) \
-            	and self.y < y < (self.y + self.h):
-              	    return True, self.clickevent()
-        elif self.buttontype == "ltrb":
-        	if self.x < x < self.w \
-              	and self.y > y > self.h:
-          		return True, self.clickevent()
+        if self.enablebutton:
+            if self.buttontype == "standard":
+                if self.x - self.w/2 <= x <= self.x + self.w/2 \
+                    and self.y - self.h/2 <= y <= self.y + self.h/2:
+                    return True, self.clickevent()
+            elif self.buttontype == "xywh":
+                if self.x < x < (self.x + self.w) \
+                    and self.y < y < (self.y + self.h):
+                        return True, self.clickevent()
+            elif self.buttontype == "ltrb":
+                if self.x < x < self.w \
+                    and self.y > y > self.h:
+                    return True, self.clickevent()
         return False,
     
     def draw(self):
-        if self.filled:
-            if self.buttontype == "standard":
-                arcade.draw_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "ltrb":
-                arcade.draw_lrtb_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "xywh":
-                arcade.draw_xywh_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
-        if not self.filled:
-            if self.buttontype == "standard":
-                arcade.draw_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "ltrb":
-                arcade.draw_lrtb_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
-            elif self.buttontype == "xywh":
-                arcade.draw_xywh_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
+        if self.enablebutton:
+            if self.filled:
+                if self.buttontype == "standard":
+                    arcade.draw_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
+                elif self.buttontype == "ltrb":
+                    arcade.draw_lrtb_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
+                elif self.buttontype == "xywh":
+                    arcade.draw_xywh_rectangle_filled(self.x, self.y, self.w, self.h, self.color)
+            if not self.filled:
+                if self.buttontype == "standard":
+                    arcade.draw_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
+                elif self.buttontype == "ltrb":
+                    arcade.draw_lrtb_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
+                elif self.buttontype == "xywh":
+                    arcade.draw_xywh_rectangle_outline(self.x, self.y, self.w, self.h, self.color)
+            if self.displaytext:
+                arcade.draw_text(*self._text_args, **self._text_kwargs)
 
 
 # Start screen setup
@@ -63,6 +69,8 @@ on_start_screen = True
 start_key_pressed = False
 start_key_rgb = (255, 255, 255)
 start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
+start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
+
 
 # Play screen setup
 on_play_screen = False
@@ -90,7 +98,6 @@ def on_draw():
 
 def draw_start_screen():
     start_button.draw()
-    arcade.draw_text("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
 
 def draw_start_screen_animation():
@@ -123,10 +130,9 @@ def on_key_release(key, modifiers):
 def on_mouse_press(x, y, button, modifiers):
     global start_key_pressed, start_button
     if start_button.check_press(x, y)[0]:
-        start_button.color = (0, 0, 0, 0)
+        start_button.enablebutton = False
+        start_button.displaytext = False
         start_key_pressed = True
-
-
 
 
 def setup():
