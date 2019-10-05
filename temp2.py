@@ -9,6 +9,7 @@ HEIGHT = 600
 class Button:
     def empty():
         pass
+
     def __init__(self, x, y, w, h, color, filled, buttontype):
         self.x = x
         self.y = y
@@ -91,10 +92,9 @@ def on_draw():
             if start_key_rgb[0] == 0:
                 on_start_screen = False
                 on_play_screen = True
-            print(start_key_rgb)
     elif on_play_screen:
-        background = arcade.load_texture("assets/grid_background.png")
-        arcade.draw_texture_rectangle(WIDTH/2, HEIGHT/2, 800, 600, background)
+        background_image = arcade.load_texture("assets/grid_background.png")
+        arcade.draw_texture_rectangle(WIDTH/2, HEIGHT/2, 800, 600, background_image)
 
 
 def draw_start_screen():
