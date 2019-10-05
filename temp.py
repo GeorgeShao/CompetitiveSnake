@@ -90,6 +90,7 @@ class MyGame(arcade.Window):
         self.flags = {
             "on_start_screen": False,
             "on_play_screen":  False,
+            "start_key_pressed": False,
 
         }
 
@@ -100,7 +101,7 @@ class MyGame(arcade.Window):
         arcade.start_render()
         if self.flags["on_start_screen"]:
             draw_start_screen()
-            if start_key_pressed:
+            if f:
                 if start_key_rgb[0] > 0:
                     start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
                     arcade.set_background_color(start_key_rgb)
