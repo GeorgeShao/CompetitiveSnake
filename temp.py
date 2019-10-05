@@ -26,6 +26,9 @@ class Button:
         self.clickevent = Button.empty
         self.enablebutton = True
         self.displaytext = True
+
+    def onClick(self, func):
+      	self.clickevent = func
     
     def text_arguments(self, *args, **kwargs):
         self._text_args = args
