@@ -99,7 +99,7 @@ class MyGame(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         if self.flags["on_start_screen"]:
-            draw_start_screen()
+            self.draw_start_screen()
             if self.flags["start_key_pressed"]:
                 if start_key_rgb[0] > 0:
                     start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
@@ -113,7 +113,7 @@ class MyGame(arcade.Window):
         # Render the text
 
     def draw_start_screen(self):
-        start_button.draw()
+        self.start_button.draw()
 
 
     def draw_start_screen_animation(self):
@@ -143,9 +143,9 @@ class MyGame(arcade.Window):
 
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if start_button.check_press(x, y)[0]:
-            start_button.enablebutton = False
-            start_button.displaytext = False
+        if self.start_button.check_press(x, y)[0]:
+            self.start_button.enablebutton = False
+            self.start_button.displaytext = False
             self.flags["start_key_pressed"] = True
 
     def update(self, delta_time):
