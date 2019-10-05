@@ -14,9 +14,9 @@ import os
 
 SPRITE_SCALING = 0.5
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Sprite Collect Coins with Background Example"
+SCREEN_WIDTH = WIDTH = 800
+SCREEN_HEIGHT = HEIGHT = 600
+SCREEN_TITLE = f"Competitive Snake (from {__file__})"
 
 
 class Button:
@@ -87,40 +87,45 @@ class MyGame(arcade.Window):
 
         # Call the parent class initializer
         super().__init__(width, height, title)
-        self.flags = {}
+        self.flags = {
+            "on_start_screen": False,
+            "on_play_screen":  False,
 
+        }
+
+        start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
+        start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
     def on_draw(self):
         arcade.start_render()
-        if on_start_screen:
+        if self.flags["on_start_screen"]:
             draw_start_screen()
             if start_key_pressed:
                 if start_key_rgb[0] > 0:
                     start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
                     arcade.set_background_color(start_key_rgb)
                 if start_key_rgb[0] == 0:
-                    on_start_screen = False
-                    on_play_screen = True
+                    self.flags["on_start_screen"] = False
+                    self.flags["on_play_screen"] = True
                 print(start_key_rgb)
-        elif on_play_screen:
+        elif self.flags["on_play_screen"]:
             draw_grid()
         # Render the text
 
-    def draw_start_screen():
+    def draw_start_screen(self):
         start_button.draw()
 
 
-    def draw_start_screen_animation():
-        global start_key_rgb, on_start_screen, on_play_screen
+    def draw_start_screen_animation(self):
         arcade.draw_xywh_rectangle_filled(0, 0, WIDTH, HEIGHT, start_key_rgb)
 
-        if on_start_screen:
+        if self.flags["on_start_screen"]:
             arcade.set_background_color(arcade.color.WHITE)
-        elif on_play_screen:
+        elif self.flags["on_play_screen"]:
             arcade.set_background_color(arcade.color.BLACK)
 
 
-    def draw_grid():
+    def draw_grid(self):
         arcade.set_background_color(arcade.color.BLACK)
         arcade.draw_xywh_rectangle_outline(1, 0, WIDTH-1, HEIGHT-1, arcade.color.RED)
         for i in range(1, int(WIDTH/20)):
@@ -129,34 +134,26 @@ class MyGame(arcade.Window):
             arcade.draw_line(1, i*20, WIDTH, i*20, arcade.color.WHITE)
 
 
-    def on_key_press(key, modifiers):
+    def on_key_press(self, key, modifiers):
         pass
 
 
-    def on_key_release(key, modifiers):
+    def on_key_release(self, key, modifiers):
         pass
 
 
-    def on_mouse_press(x, y, button, modifiers):
+    def on_mouse_press(self, x, y, button, modifiers):
         if start_button.check_press(x, y)[0]:
             start_button.enablebutton = False
             start_button.displaytext = False
             start_key_pressed = True
 
+    def update(self, delta_time):
+        pass
 
-    def setup():
-        arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
+    def setup(self):
+        # arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
         arcade.set_background_color(arcade.color.WHITE)
-        arcade.schedule(on_update, 1/60)
-
-        # Override arcade window methods
-        window = arcade.get_window()
-        window.on_draw = on_draw
-        window.on_key_press = on_key_press
-        window.on_key_release = on_key_release
-        window.on_mouse_press = on_mouse_press
-
-        arcade.run()
 
 def main():
     """ Main method """
