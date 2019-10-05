@@ -101,7 +101,7 @@ class MyGame(arcade.Window):
         arcade.start_render()
         if self.flags["on_start_screen"]:
             draw_start_screen()
-            if f:
+            if self.flags["start_key_pressed"]:
                 if start_key_rgb[0] > 0:
                     start_key_rgb = (start_key_rgb[0] - 3, start_key_rgb[1] - 3, start_key_rgb[2] - 3)
                     arcade.set_background_color(start_key_rgb)
@@ -147,7 +147,7 @@ class MyGame(arcade.Window):
         if start_button.check_press(x, y)[0]:
             start_button.enablebutton = False
             start_button.displaytext = False
-            start_key_pressed = True
+            self.flags["start_key_pressed"] = True
 
     def update(self, delta_time):
         pass
