@@ -112,11 +112,11 @@ def draw_start_screen_animation():
 
 def draw_grid():
     arcade.set_background_color(arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_outline(1, 1, WIDTH-1, HEIGHT-2, arcade.color.RED)
-    for i in range(int(WIDTH/20)):
+    arcade.draw_xywh_rectangle_outline(1, 0, WIDTH-1, HEIGHT-1, arcade.color.RED)
+    for i in range(1, int(WIDTH/20)):
         arcade.draw_line(i*20, 0, i*20, HEIGHT, arcade.color.WHITE)
-    for i in range(int(HEIGHT/20)):
-        arcade.draw_line(0, i*20, WIDTH, i*20, arcade.color.WHITE)
+    for i in range(1, int(HEIGHT/20)):
+        arcade.draw_line(1, i*20, WIDTH, i*20, arcade.color.WHITE)
 
 
 def on_key_press(key, modifiers):
