@@ -7,9 +7,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 UPDATE_HERTZ = 4
 
-SNAKE_1_CONTROLS = {arcade.key.UP: 0, arcade.key.RIGHT: 1, arcade.key.DOWN: 2, arcade.key.LEFT: 3}
+SNAKE_1_CONTROLS = {arcade.key.W: 0, arcade.key.D: 1, arcade.key.S: 2, arcade.key.A: 3}
 SNAKE_1_COLOR = arcade.color.GREEN
-SNAKE_2_CONTROLS = {arcade.key.W: 0, arcade.key.D: 1, arcade.key.S: 2, arcade.key.A: 3}
+SNAKE_2_CONTROLS = {arcade.key.UP: 0, arcade.key.RIGHT: 1, arcade.key.DOWN: 2, arcade.key.LEFT: 3}
 SNAKE_2_COLOR = arcade.color.YELLOW
 
 SCREEN_WIDTH = WIDTH = 800
