@@ -93,6 +93,8 @@ class MyGame(arcade.Window):
         self.background = None
         self.snake1 = [(1,1), (1,2), (1,3), (1,4), (1,5)]
         self.snake2 = [(38,1), (38,2), (38,3), (38,4), (38, 5)]
+        self.snake1_len = 5
+        self.snake2_len = 5
         arcade.set_background_color(arcade.color.WHITE)
         self.start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
         self.start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
@@ -182,7 +184,8 @@ class MyGame(arcade.Window):
                 self.snake1.append((snake_head[0], snake_head[1] - 1))
             elif self.flags["snake_direction_1"] == 3:
                 self.snake1.append((snake_head[0] - 1, snake_head[1]))
-            del self.snake1[0]
+            if len(self.snake1) > self.snake1_len:
+                del self.snake1[0]
 
 
             *snake_body, snake_head = self.snake2
@@ -204,7 +207,8 @@ class MyGame(arcade.Window):
                 self.snake2.append((snake_head[0], snake_head[1] - 1))
             elif self.flags["snake_direction_2"] == 3:
                 self.snake2.append((snake_head[0] - 1, snake_head[1]))
-            del self.snake2[0]
+            if len(self.snake2) > self.snake2_len:
+                del self.snake2[0]
 
 
     def setup(self):
