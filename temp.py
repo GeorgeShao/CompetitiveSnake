@@ -23,7 +23,7 @@ class Button:
         self.x = x
         self.y = y
         self.w = w
-        self.h = hz
+        self.h = h
         self.color = color
         self.filled = filled
         self.buttontype = buttontype
