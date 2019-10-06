@@ -22,13 +22,10 @@ class Button:
         self.color = color
         self.filled = filled
         self.buttontype = buttontype
-        self.clickevent = Button.empty
+        self.clickevent = lambda: None
         self.enablebutton = True
         self.displaytext = True
 
-    def onClick(self, func):
-      	self.clickevent = lambda: None
-    
     def text_arguments(self, *args, **kwargs):
         self._text_args = args
         self._text_kwargs = kwargs
@@ -91,6 +88,13 @@ class MyGame(arcade.Window):
         self.start_button = Button(WIDTH/2, HEIGHT/2, 300, 100, arcade.color.GREEN, True, "standard")
         self.start_button.text_arguments("PLAY", WIDTH/2 - 60, HEIGHT/2 - 25, arcade.color.WHITE, font_size=50)
 
+    def _draw_tile(self, tile):
+        arcade.draw_xywh_rectangle_filled(20*tile[0] + 1, 20*tile[1] + 1, 19, 19, arcade.color.GREEN)
+    
+    def draw_snake(self, snake):
+        for i in snake:
+            self._draw_tile(i)
+
     def on_draw(self):
         arcade.start_render()
         if self.flags["on_start_screen"]:
@@ -105,6 +109,7 @@ class MyGame(arcade.Window):
         elif self.flags["on_play_screen"]:
             arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
                                          SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+            self.draw_snake([(1,1), (1,2), (2,2)])
 
 
     def draw_start_screen(self):
