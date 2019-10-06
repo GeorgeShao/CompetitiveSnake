@@ -135,12 +135,16 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         if self.flags["on_play_screen"]:
             try:
-                self.flags["snake_direction_1"] = SNAKE_1_CONTROLS[key]
+                new_direction = SNAKE_1_CONTROLS[key]
+                if abs(new_direction - self.flags["snake_direction_1"]) != 2:
+                    self.flags["snake_direction_1"] = new_direction
             except KeyError:
                 print("Key error 1")
                 pass
             try:
-                self.flags["snake_direction_2"] = SNAKE_2_CONTROLS[key]
+                new_direction2 = SNAKE_2_CONTROLS[key]
+                if abs(new_direction2 - self.flags["snake_direction_2"]) != 2:
+                    self.flags["snake_direction_2"] = new_direction2
             except KeyError:
                 print("Key error 2")
                 pass
